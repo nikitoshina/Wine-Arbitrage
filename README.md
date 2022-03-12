@@ -37,7 +37,7 @@ San Francisco, California, and is specific to this location. Data was
 collected using docker, Rselenium, and rvest combination, so every
 listing would be exactly what you would find yourself. Each one-dollar
 price range (4-30) was scraped individually. For more information on the
-web scraping, please, refer to the datasource.r file.
+web scraping, please, refer to the [source.Rms](source.Rmd) file. To download the data go to [https://www.kaggle.com/nikitatkachenko/VivinoRedWine](https://www.kaggle.com/nikitatkachenko/VivinoRedWine).
 
 ### Cleaning
 
