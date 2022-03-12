@@ -93,7 +93,7 @@ the larger variety produced by the government. The distribution on the
 number of ratings appears to follow log distribution, so it will be used
 as a log in the regression.
 
-<img src="assets/Frequency_Distributions-1.png" width="50%" /><img src="first_knit_files/figure-markdown_strict/Frequency_Distributions-2.png" width="50%" /><img src="first_knit_files/figure-markdown_strict/Frequency_Distributions-3.png" width="50%" /><img src="first_knit_files/figure-markdown_strict/Frequency_Distributions-4.png" width="50%" />
+<img src="assets/Frequency_Distributions-1.png" width="50%" /><img src="assets/Frequency_Distributions-2.png" width="50%" /><img src="assets/Frequency_Distributions-3.png" width="50%" /><img src="assets/Frequency_Distributions-4.png" width="50%" />
 
 The range of age variable might come from non-available for purchase or
 bad stock wines. The following graph examines if age leads to higher
@@ -101,7 +101,7 @@ rating for each country. For some countries there is not enough data
 points to make a definitive answer. Nonetheless, in most cases wines
 younger than 5 years have higher ratings.
 
-<img src="assets/RatingCountry-1.png" width="80%" /><img src="first_knit_files/figure-markdown_strict/RatingCountry-2.png" width="80%" />
+<img src="assets/RatingCountry-1.png" width="80%" /><img src="assets/RatingCountry-2.png" width="80%" />
 
 ## Empirical Models
 
