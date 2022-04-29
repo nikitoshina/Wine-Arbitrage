@@ -61,14 +61,14 @@ data used for regression, only wines younger than ten years and with
 more than 30 reviews were used.
 
     ##   wine_name         wine_country        wine_rating      n_ratings      
-    ##  Length:10286       Length:10286       Min.   :2.500   Min.   :   25.0  
+    ##  Length:10285       Length:10285       Min.   :2.500   Min.   :   25.0  
     ##  Class :character   Class :character   1st Qu.:3.600   1st Qu.:   68.0  
     ##  Mode  :character   Mode  :character   Median :3.800   Median :  165.0  
     ##                                        Mean   :3.759   Mean   :  518.5  
     ##                                        3rd Qu.:3.900   3rd Qu.:  464.0  
     ##                                        Max.   :4.600   Max.   :24713.0  
     ##    wine_price        y_old           winery         
-    ##  Min.   : 4.25   Min.   : 1.000   Length:10286      
+    ##  Min.   : 4.25   Min.   : 1.000   Length:10285      
     ##  1st Qu.:12.99   1st Qu.: 3.000   Class :character  
     ##  Median :18.98   Median : 5.000   Mode  :character  
     ##  Mean   :18.58   Mean   : 5.257                     
@@ -83,7 +83,7 @@ between rating and price. Cheaper wines appear to have more reviews.
 There seems to be some relationship between age and price, with older
 wines costing more. Countries have different distributions of prices.
 
-<img src="source/figure-markdown_strict/Plots-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="source_files/figure-markdown_strict/Plots-1.png" width="100%" style="display: block; margin: auto;" />
 
 The following tables present distributions of explanatory variables.
 Wine ratings appear to be normally distributed, which might reflect
@@ -96,7 +96,7 @@ the larger variety produced by the government. The distribution on the
 number of ratings appears to follow log distribution, so it will be used
 as a log in the regression.
 
-<img src="source/figure-markdown_strict/Frequency_Distributions-1.png" width="50%" /><img src="source/figure-markdown_strict/Frequency_Distributions-2.png" width="50%" /><img src="source/figure-markdown_strict/Frequency_Distributions-3.png" width="50%" /><img src="source/figure-markdown_strict/Frequency_Distributions-4.png" width="50%" />
+<img src="source_files/figure-markdown_strict/Frequency_Distributions-1.png" width="50%" /><img src="source_files/figure-markdown_strict/Frequency_Distributions-2.png" width="50%" /><img src="source_files/figure-markdown_strict/Frequency_Distributions-3.png" width="50%" /><img src="source_files/figure-markdown_strict/Frequency_Distributions-4.png" width="50%" />
 
 The range of age variable might come from non-available for purchase or
 bad stock wines. The following graph examines if age leads to higher
@@ -104,7 +104,7 @@ rating for each country. For some countries there is not enough data
 points to make a definitive answer. Nonetheless, in most cases wines
 younger than 5 years have higher ratings.
 
-<img src="source/figure-markdown_strict/RatingCountry-1.png" width="80%" /><img src="source/figure-markdown_strict/RatingCountry-2.png" width="80%" />
+<img src="source_files/figure-markdown_strict/RatingCountry-1.png" width="80%" /><img src="source_files/figure-markdown_strict/RatingCountry-2.png" width="80%" />
 
 ## Empirical Models
 
@@ -122,18 +122,18 @@ examined using logistic regression.
 
 The regression results suggest that age and `wine_rating` positively
 correlate with price, while `n_ratings` have negative. Each extra year
-increases the price by $0.47. A 1% increase in the number of ratings
-coincides with a 8.18% decrease in price. The interaction variable
+increases the price by $1.05. A 1% increase in the number of ratings
+coincides with a 8.11% decrease in price. The interaction variable
 between `n_ratings` and `wine_rating` suggests that 1 unit increase in
 rating increases marginal effect of 1% change of number of ratings on
-price by 1.93%. Three of these variables have a significant relationship
+price by 1.91%. Three of these variables have a significant relationship
 at the 1% level. Countries have a variable impact on the price, with
 some being better than others. Wald Test on the significance of the
-country variable resulted in 351, which is enough to accept that the
+country variable resulted in 352.64, which is enough to accept that the
 country variable is significant at 1% significance. Level R<sup>2</sup>
-of the regression is 37.54%, meaning the variability of explanatory
-variables explains 37.54% of the price variation. F statistic for the
-regression is 295.58, which is enough to confirm that the regression has
+of the regression is 37.65%, meaning the variability of explanatory
+variables explains 37.65% of the price variation. F statistic for the
+regression is 282.11, which is enough to confirm that the regression has
 substantial explanatory power at 1% significance level. To test for
 heteroskedasticity, White Test was used. The test p-value is below 1%,
 so we can conclude that the distribution of errors is heteroskedastic.
@@ -171,13 +171,13 @@ p
 (Intercept)
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--1.20
+-2.66
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--8.29 – 5.89
+-9.78 – 4.46
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.740
+0.464
 </td>
 </tr>
 <tr>
@@ -185,10 +185,24 @@ p
 y old
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.47
+1.05
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.42 – 0.53
+0.77 – 1.33
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+y old^2
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.05
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.08 – -0.03
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -199,10 +213,10 @@ y old
 wine country \[Australia\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.35
+1.29
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.69 – 2.01
+0.63 – 1.96
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -213,10 +227,10 @@ wine country \[Australia\]
 wine country \[Austria\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-5.24
+5.22
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-3.47 – 7.02
+3.44 – 6.99
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -227,13 +241,13 @@ wine country \[Austria\]
 wine country \[Chile\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.30
+-0.35
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.93 – 0.33
+-0.98 – 0.28
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.352
+0.280
 </td>
 </tr>
 <tr>
@@ -241,10 +255,10 @@ wine country \[Chile\]
 wine country \[France\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-3.25
+3.21
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-2.76 – 3.73
+2.73 – 3.69
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -255,10 +269,10 @@ wine country \[France\]
 wine country \[Germany\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-6.01
+5.92
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-3.66 – 8.36
+3.57 – 8.27
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -269,10 +283,10 @@ wine country \[Germany\]
 wine country \[Greece\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-2.78
+2.72
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.44 – 4.12
+1.38 – 4.06
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -283,13 +297,13 @@ wine country \[Greece\]
 wine country \[Israel\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.94
+1.91
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.60 – 3.27
+0.58 – 3.24
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>0.004</strong>
+<strong>0.005</strong>
 </td>
 </tr>
 <tr>
@@ -297,10 +311,10 @@ wine country \[Israel\]
 wine country \[Italy\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-2.92
+2.86
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-2.45 – 3.39
+2.40 – 3.33
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -311,10 +325,10 @@ wine country \[Italy\]
 wine country \[Mexico\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-5.57
+5.52
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-3.21 – 7.92
+3.17 – 7.87
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -325,10 +339,10 @@ wine country \[Mexico\]
 wine country \[New<br>Zealand\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-6.28
+6.25
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-5.06 – 7.49
+5.04 – 7.46
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -339,10 +353,10 @@ wine country \[New<br>Zealand\]
 wine country \[Portugal\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--1.71
+-1.78
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--2.48 – -0.95
+-2.54 – -1.01
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -353,10 +367,10 @@ wine country \[Portugal\]
 wine country \[South<br>Africa\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.64
+1.58
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.78 – 2.50
+0.72 – 2.43
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -367,13 +381,13 @@ wine country \[South<br>Africa\]
 wine country \[Spain\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.48
+0.44
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.05 – 1.01
+-0.09 – 0.97
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.077
+0.105
 </td>
 </tr>
 <tr>
@@ -381,10 +395,10 @@ wine country \[Spain\]
 wine country \[United<br>States\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.85
+0.80
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.41 – 1.30
+0.35 – 1.24
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -395,13 +409,13 @@ wine country \[United<br>States\]
 wine country \[Uruguay\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-2.34
+2.27
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.04 – 4.63
+-0.02 – 4.56
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>0.046</strong>
+0.052
 </td>
 </tr>
 <tr>
@@ -409,10 +423,10 @@ wine country \[Uruguay\]
 n ratings \[log\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--8.18
+-8.11
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--9.52 – -6.84
+-9.45 – -6.77
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -423,10 +437,10 @@ n ratings \[log\]
 wine rating
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-5.50
+5.55
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-3.62 – 7.38
+3.67 – 7.42
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -437,10 +451,10 @@ wine rating
 n ratings \[log\] \* wine<br>rating
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.93
+1.91
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.58 – 2.29
+1.56 – 2.26
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -451,7 +465,7 @@ n ratings \[log\] \* wine<br>rating
 Observations
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
-9366
+9365
 </td>
 </tr>
 <tr>
@@ -459,27 +473,26 @@ Observations
 R<sup>2</sup> / R<sup>2</sup> adjusted
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.375 / 0.374
+0.376 / 0.375
 </td>
 </tr>
 </table>
 
-    ## [1] "Wald test statistic: 351"
+    ## [1] "Wald test statistic: 352.64"
 
     ## 
     ##  studentized Breusch-Pagan test
     ## 
     ## data:  lm_price_model
-    ## BP = 441, df = 130, p-value < 2.2e-16
+    ## BP = 444.36, df = 130, p-value < 2.2e-16
 
     ##                                  GVIF Df GVIF^(1/(2*Df))
-    ## y_old                        1.036396  1        1.018035
-    ## wine_country                 1.106082 15        1.003366
-    ## log(n_ratings)             255.022491  1       15.969424
-    ## wine_rating                 16.810418  1        4.100051
-    ## log(n_ratings):wine_rating 280.610499  1       16.751433
-
-![](source/figure-markdown_strict/LM%20Price-1.png)
+    ## y_old                       25.284233  1        5.028343
+    ## I(y_old^2)                  25.173723  1        5.017342
+    ## wine_country                 1.111022 15        1.003516
+    ## log(n_ratings)             255.205102  1       15.975140
+    ## wine_rating                 16.814468  1        4.100545
+    ## log(n_ratings):wine_rating 280.916366  1       16.760560
 
 To address the heteroskedasticity a robust regression was performed. The
 t-statistics were not significantly different from the original OLS
@@ -497,103 +510,108 @@ concern.
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">-0.355</td>
-<td style="text-align: right;">-0.332</td>
+<td style="text-align: right;">-0.785</td>
+<td style="text-align: right;">-0.732</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">y_old</td>
-<td style="text-align: right;">15.903</td>
-<td style="text-align: right;">16.452</td>
+<td style="text-align: right;">7.240</td>
+<td style="text-align: right;">7.432</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">I(y_old^2)</td>
+<td style="text-align: right;">-4.031</td>
+<td style="text-align: right;">-4.184</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">wine_countryAustralia</td>
-<td style="text-align: right;">4.024</td>
-<td style="text-align: right;">3.991</td>
+<td style="text-align: right;">3.878</td>
+<td style="text-align: right;">3.838</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">wine_countryAustria</td>
-<td style="text-align: right;">6.449</td>
-<td style="text-align: right;">5.790</td>
+<td style="text-align: right;">6.433</td>
+<td style="text-align: right;">5.768</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">wine_countryChile</td>
-<td style="text-align: right;">-1.060</td>
-<td style="text-align: right;">-0.930</td>
+<td style="text-align: right;">-1.234</td>
+<td style="text-align: right;">-1.081</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">wine_countryFrance</td>
-<td style="text-align: right;">14.125</td>
-<td style="text-align: right;">13.221</td>
+<td style="text-align: right;">13.970</td>
+<td style="text-align: right;">13.064</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">wine_countryGermany</td>
-<td style="text-align: right;">5.525</td>
-<td style="text-align: right;">5.007</td>
+<td style="text-align: right;">5.507</td>
+<td style="text-align: right;">4.941</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">wine_countryGreece</td>
-<td style="text-align: right;">3.602</td>
-<td style="text-align: right;">4.071</td>
+<td style="text-align: right;">3.541</td>
+<td style="text-align: right;">3.987</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">wine_countryIsrael</td>
-<td style="text-align: right;">3.011</td>
-<td style="text-align: right;">2.848</td>
+<td style="text-align: right;">2.997</td>
+<td style="text-align: right;">2.808</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">wine_countryItaly</td>
-<td style="text-align: right;">12.783</td>
-<td style="text-align: right;">12.198</td>
+<td style="text-align: right;">12.554</td>
+<td style="text-align: right;">11.973</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">wine_countryMexico</td>
-<td style="text-align: right;">5.937</td>
-<td style="text-align: right;">4.639</td>
+<td style="text-align: right;">5.974</td>
+<td style="text-align: right;">4.605</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">wine_countryNew Zealand</td>
-<td style="text-align: right;">12.844</td>
-<td style="text-align: right;">10.134</td>
+<td style="text-align: right;">12.865</td>
+<td style="text-align: right;">10.099</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">wine_countryPortugal</td>
-<td style="text-align: right;">-4.346</td>
-<td style="text-align: right;">-4.390</td>
+<td style="text-align: right;">-4.496</td>
+<td style="text-align: right;">-4.554</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">wine_countrySouth Africa</td>
-<td style="text-align: right;">3.904</td>
-<td style="text-align: right;">3.754</td>
+<td style="text-align: right;">3.755</td>
+<td style="text-align: right;">3.604</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">wine_countrySpain</td>
-<td style="text-align: right;">1.833</td>
-<td style="text-align: right;">1.767</td>
+<td style="text-align: right;">1.682</td>
+<td style="text-align: right;">1.621</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">wine_countryUnited States</td>
-<td style="text-align: right;">4.072</td>
-<td style="text-align: right;">3.754</td>
+<td style="text-align: right;">3.794</td>
+<td style="text-align: right;">3.493</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">wine_countryUruguay</td>
-<td style="text-align: right;">2.403</td>
-<td style="text-align: right;">1.995</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">log(n_ratings)</td>
-<td style="text-align: right;">-13.197</td>
-<td style="text-align: right;">-11.973</td>
+<td style="text-align: right;">2.314</td>
+<td style="text-align: right;">1.940</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">wine_rating</td>
-<td style="text-align: right;">6.123</td>
-<td style="text-align: right;">5.742</td>
+<td style="text-align: left;">log(n_ratings)</td>
+<td style="text-align: right;">-13.091</td>
+<td style="text-align: right;">-11.877</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">wine_rating</td>
+<td style="text-align: right;">6.191</td>
+<td style="text-align: right;">5.795</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">log(n_ratings):wine_rating</td>
-<td style="text-align: right;">11.776</td>
-<td style="text-align: right;">10.707</td>
+<td style="text-align: right;">11.648</td>
+<td style="text-align: right;">10.587</td>
 </tr>
 </tbody>
 </table>
@@ -611,7 +629,7 @@ age and positive correlation with log of number of ratings and price.
 Only a few countries pass the 5% significance level. Nonetheless, the
 Wald Test statistic of 420.92 suggests that the variable country is
 significant to be included in the regression. The R<sup>2</sup> is
-23.13%, meaning 23.13% of the variability in good/bad is explained by
+23.6%, meaning 23.6% of the deviance in good/bad is explained by
 variance of explanatory variables. F statistic is 420.92, which is
 enough to confirm that the regression has substantial explanatory power
 at a 1% significance level. The area under the ROC curve is 78.1%,
@@ -631,7 +649,7 @@ good
 Predictors
 </td>
 <td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-Estimates
+Odds Ratios
 </td>
 <td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
 CI
@@ -645,10 +663,10 @@ p
 (Intercept)
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.25
+0.03
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.32 – -0.18
+0.02 – 0.04
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -659,10 +677,10 @@ p
 y old
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.03
+0.88
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.03 – -0.02
+0.85 – 0.90
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -673,13 +691,13 @@ y old
 wine country \[Australia\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.11
+0.52
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.17 – -0.05
+0.38 – 0.71
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>0.001</strong>
+<strong>&lt;0.001</strong>
 </td>
 </tr>
 <tr>
@@ -687,13 +705,13 @@ wine country \[Australia\]
 wine country \[Austria\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.17
+0.33
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.33 – -0.01
+0.13 – 0.82
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>0.037</strong>
+<strong>0.017</strong>
 </td>
 </tr>
 <tr>
@@ -701,13 +719,13 @@ wine country \[Austria\]
 wine country \[Chile\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.06
+0.75
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.12 – -0.00
+0.56 – 1.01
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>0.041</strong>
+0.063
 </td>
 </tr>
 <tr>
@@ -715,13 +733,13 @@ wine country \[Chile\]
 wine country \[France\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.05
+0.77
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.09 – -0.00
+0.61 – 0.96
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>0.034</strong>
+<strong>0.022</strong>
 </td>
 </tr>
 <tr>
@@ -729,13 +747,13 @@ wine country \[France\]
 wine country \[Germany\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.13
+0.67
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.34 – 0.07
+0.23 – 2.22
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.203
+0.481
 </td>
 </tr>
 <tr>
@@ -743,13 +761,13 @@ wine country \[Germany\]
 wine country \[Greece\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.07
+0.80
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.20 – 0.06
+0.42 – 1.54
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.313
+0.502
 </td>
 </tr>
 <tr>
@@ -757,13 +775,13 @@ wine country \[Greece\]
 wine country \[Israel\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.07
+0.78
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.20 – 0.05
+0.41 – 1.47
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.253
+0.444
 </td>
 </tr>
 <tr>
@@ -771,13 +789,13 @@ wine country \[Israel\]
 wine country \[Italy\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.07
+0.72
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.11 – -0.02
+0.58 – 0.90
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>0.002</strong>
+<strong>0.004</strong>
 </td>
 </tr>
 <tr>
@@ -785,13 +803,13 @@ wine country \[Italy\]
 wine country \[Mexico\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.14
+0.62
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.35 – 0.08
+0.21 – 1.96
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.220
+0.386
 </td>
 </tr>
 <tr>
@@ -799,10 +817,10 @@ wine country \[Mexico\]
 wine country \[New<br>Zealand\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.38
+0.16
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.49 – -0.27
+0.09 – 0.28
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -813,13 +831,13 @@ wine country \[New<br>Zealand\]
 wine country \[Portugal\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.07
+1.56
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.00 – 0.14
+1.08 – 2.26
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.060
+<strong>0.017</strong>
 </td>
 </tr>
 <tr>
@@ -827,13 +845,13 @@ wine country \[Portugal\]
 wine country \[South<br>Africa\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.01
+1.05
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.07 – 0.09
+0.69 – 1.62
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.791
+0.809
 </td>
 </tr>
 <tr>
@@ -841,13 +859,13 @@ wine country \[South<br>Africa\]
 wine country \[Spain\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.01
+0.97
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.06 – 0.04
+0.76 – 1.25
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.699
+0.838
 </td>
 </tr>
 <tr>
@@ -855,13 +873,13 @@ wine country \[Spain\]
 wine country \[United<br>States\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.04
+1.28
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.00 – 0.09
+1.04 – 1.58
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>0.036</strong>
+<strong>0.021</strong>
 </td>
 </tr>
 <tr>
@@ -869,13 +887,13 @@ wine country \[United<br>States\]
 wine country \[Uruguay\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.03
+1.18
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.19 – 0.25
+0.42 – 3.49
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.778
+0.758
 </td>
 </tr>
 <tr>
@@ -883,10 +901,10 @@ wine country \[Uruguay\]
 n ratings \[log\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.05
+1.28
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.04 – 0.06
+1.23 – 1.34
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -897,10 +915,10 @@ n ratings \[log\]
 wine price
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.04
+1.19
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.03 – 0.04
+1.18 – 1.20
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001</strong>
@@ -916,26 +934,26 @@ Observations
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-R<sup>2</sup> / R<sup>2</sup> adjusted
+R<sup>2</sup> Tjur
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.233 / 0.231
+0.235
 </td>
 </tr>
 </table>
 
-    ## [1] "Wald test statistic: 414.22"
+    ## [1] "Wald test statistic: 414.09"
 
-<img src="source/figure-markdown_strict/LogRegressionGood-1.png" style="display: block; margin: auto;" />
+<img src="source_files/figure-markdown_strict/LogRegressionGood-1.png" style="display: block; margin: auto;" />
 
-    ## Area under the curve: 0.7699
+    ## Area under the curve: 0.772
 
 ### So which country should I buy?
 
 If you live in California, according to the t-test results, wines made
 in the U.S. have a significantly better rating on Vivino.
 
-<img src="source/figure-markdown_strict/AnyCountryBetter-1.png" style="display: block; margin: auto;" />
+<img src="source_files/figure-markdown_strict/AnyCountryBetter-1.png" style="display: block; margin: auto;" />
 
 ## Conclusion
 

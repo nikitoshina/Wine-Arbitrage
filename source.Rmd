@@ -176,7 +176,7 @@ df_wine <- dirty_wine[complete.cases(dirty_wine),] %>% distinct()
 The resulting dataset contains `r nrow(dim)` observations of red wine in the \$4 to \$30 price range. Wine year was replaced with years old as of the current year (2022). Countries with less than ten wines were removed. In the data used for regression, only wines younger than ten years and with more than 30 reviews were used.
 ```{r Data Cleaning}
 # Download data
-df_wine <- read.csv("red_wine4_30.csv")
+df_wine <- read_csv("red_wine4_30.csv")
 # Complete cases
 wines <- df_wine[complete.cases(df_wine),]
 # age of wine
@@ -274,7 +274,7 @@ To estimate the relationships between variables I will be using linear model. Th
 # Linear Model
 # Select wines younger than 10 years and with more than 30 ratings
 wines_price_lm <- wines %>% filter(y_old<=10, n_ratings >= 30)
-lm_price_model <- lm(wine_price ~ y_old + y_old^2 + wine_country + log(n_ratings) + wine_rating + log(n_ratings) * wine_rating,data = wines_price_lm)
+lm_price_model <- lm(wine_price ~ y_old + I(y_old^2) + wine_country + log(n_ratings) + wine_rating + log(n_ratings):wine_rating,data = wines_price_lm)
 
 
 # Get TSS ESS RSS of Restricted
@@ -293,7 +293,7 @@ wald_test = round(wald_test,2)
 The regression results suggest that age and `wine_rating` positively correlate with price, while `n_ratings` have negative. Each extra year increases the price by `r dollar(round(lm_price_model$coefficients["y_old"],2))`. A 1% increase in the number of ratings coincides with a `r percent(abs(round(lm_price_model$coefficients["log(n_ratings)"],6)/100), accuracy = 0.01)` decrease in price. The interaction variable between `n_ratings` and `wine_rating` suggests that 1 unit increase in rating increases marginal effect of 1% change of number of ratings on price by `r percent(abs(round(lm_price_model$coefficients["log(n_ratings):wine_rating"],6)/100), accuracy = 0.01)`. Three of these variables have a significant relationship at the 1% level. Countries have a variable impact on the price, with some being better than others. Wald Test on the significance of the country variable resulted in `r wald_test`, which is enough to accept that the country variable is significant at 1% significance. Level R^2^ of the regression is `r percent(summary(lm_price_model)$r.squared, accuracy = 0.01)`, meaning the variability of explanatory variables explains `r percent(summary(lm_price_model)$r.squared, accuracy = 0.01)` of the price variation. F statistic for the regression is `r round(summary(lm_price_model)$fstatistic, 2)["value"]`, which is enough to confirm that the regression has substantial explanatory power at 1% significance level. To test for heteroskedasticity, White Test was used. The test p-value is below 1%, so we can conclude that the distribution of errors is  heteroskedastic. To test for multicollinearity, VIF is used. All explanatory variables before introduction of interaction term had VIF less than 1.1, meaning multicollinearity was not a concern for the model. Nonetheless, introduction of interaction term reduced intercept and wine country Chile significance below threshold, which was expected. 
 
 ```{r LM Price, fig.keep='all'}
-tab_model(summary(lm_price_model))
+tab_model(lm_price_model)
 #print(aod::wald.test(Sigma = vcov(lm_price_model),b=coef(lm_price_model), Terms = 4))
 
 print(paste("Wald test statistic:",round(wald_test,2)))
@@ -308,7 +308,6 @@ car::vif(lm_price_model)
 # Print distribution of residuals
 yhat <- predict(lm_price_model, wines_price_lm)
 y <- wines_price_lm[,5]
-hist((yhat-y),breaks = 25)
 
 ```
 
@@ -317,7 +316,7 @@ To address the heteroskedasticity a robust regression was performed. The t-stati
 # Linear Model
 # Select wines younger than 10 years and with more than 30 ratings
 wines_price_lm <- wines %>% filter(y_old<=10, n_ratings >= 30)
-lm_robust_model <- estimatr::lm_robust(wine_price ~ y_old + y_old^2 + wine_country + log(n_ratings) + wine_rating + log(n_ratings) * wine_rating, data = wines_price_lm,se_type = "stata")
+lm_robust_model <- estimatr::lm_robust(wine_price ~ y_old + I(y_old^2) + wine_country + log(n_ratings) + wine_rating + log(n_ratings):wine_rating, data = wines_price_lm,se_type = "stata")
 
 #summary(lm_robust_model)
 # 
@@ -351,7 +350,7 @@ cbind(V1, V2) %>% as.data.frame() %>% round(3) %>% cbind(V0, .) %>% rename("coef
 
 ### Is the wine good?
 Another question is, would it possible to guess whether a wine is good? Let us divide wines into bad, below mean rating, and good, above mean rating. Logistic regression was run using price, age, and number of ratings to answer the question. The data was partitioned into 80% train and 20% test data. The resulting regression `good ~ y_old + y_old^2 + wine_country + log(n_ratings) + wine_price` found that at 1% significance level there is negative correlation with age and positive correlation with log of number of ratings and price. Only a few countries pass the 5% significance level.
-Nonetheless, the Wald Test statistic of 420.92 suggests that the variable country is significant to be included in the regression. The R^2^ is 23.13%, meaning 23.13% of the variability in good/bad is explained by variance of explanatory variables. F statistic is 420.92, which is enough to confirm that the regression has substantial explanatory power at a 1% significance level. The area under the ROC curve is 78.1%, indicating that the model can distinguish between good and bad wines.
+Nonetheless, the Wald Test statistic of 420.92 suggests that the variable country is significant to be included in the regression. The R^2^ is 23.6%, meaning 23.6% of the deviance in good/bad is explained by variance of explanatory variables. F statistic is 420.92, which is enough to confirm that the regression has substantial explanatory power at a 1% significance level. The area under the ROC curve is 78.1%, indicating that the model can distinguish between good and bad wines.
 
 ```{r LogRegressionGood, fig.keep='all', fig.align='center'}
 # Building logistic regression
@@ -365,7 +364,7 @@ train <- wines_glm[train_ind,]
 test <- wines_glm[-train_ind,]
 test_good <- test$good
 # General Linear Model for good or bad wine
-lmmodel <- lm(good ~ y_old + y_old^2 + wine_country + log(n_ratings) + wine_price,data = train, family = "binomial")
+lmmodel <- glm(good ~ y_old + y_old^2 + wine_country + log(n_ratings) + wine_price,data = train, family = "binomial")
 tab_model(lmmodel)
 predicted = predict(lmmodel, test,type = "response")
 #lmmodel2 <- lm(good ~ y_old + n_ratings + wine_price,data = train, family = "binomial")
