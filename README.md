@@ -110,7 +110,7 @@ younger than 5 years have higher ratings.
 
 To estimate the relationships between variables I will be using linear
 model. The regression price prediction:
-`Price ~ age + age^2 + country + rating + log(number_of_ratings) rating*n_ratings`.
+`Price ~ age + age^2 + country + rating + log(n_ratings) + rating:log(n_ratings)`.
 Age and rating are expected to have a positive correlation, while
 number\_of\_ratings is suspected of having a negative correlation
 because affordable wines have more reviews. The variable country will be
@@ -134,14 +134,14 @@ country variable is significant at 1% significance. Level R<sup>2</sup>
 of the regression is 37.65%, meaning the variability of explanatory
 variables explains 37.65% of the price variation. F statistic for the
 regression is 282.11, which is enough to confirm that the regression has
-substantial explanatory power at 1% significance level. To test for
-heteroskedasticity, White Test was used. The test p-value is below 1%,
-so we can conclude that the distribution of errors is heteroskedastic.
-To test for multicollinearity, VIF is used. All explanatory variables
-before introduction of interaction term had VIF less than 1.1, meaning
-multicollinearity was not a concern for the model. Nonetheless,
-introduction of interaction term reduced intercept and wine country
-Chile significance below threshold, which was expected.
+substantial explanatory power at 1% significance level. As for
+heteroskedasticity Breusch-Pagan test was used yielding 1.9825018^{-20},
+which allows us to conclude that there is heteroskedasticity at
+significance level below 1%. To test for multicollinearity, VIF is used.
+All explanatory variables before introduction of interaction term had
+VIF less than 1.1, meaning multicollinearity was not a concern for the
+model. Nonetheless, introduction of interaction term reduced intercept
+and wine country Chile significance below threshold, which was expected.
 
 <table style="border-collapse:collapse; border:none;">
 <tr>
@@ -149,7 +149,7 @@ Chile significance below threshold, which was expected.
  
 </th>
 <th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
-wine\_price
+wine price
 </th>
 </tr>
 <tr>
@@ -484,7 +484,7 @@ R<sup>2</sup> / R<sup>2</sup> adjusted
     ##  studentized Breusch-Pagan test
     ## 
     ## data:  lm_price_model
-    ## BP = 444.36, df = 130, p-value < 2.2e-16
+    ## BP = 142.14, df = 20, p-value < 2.2e-16
 
     ##                                  GVIF Df GVIF^(1/(2*Df))
     ## y_old                       25.284233  1        5.028343
@@ -510,107 +510,107 @@ concern.
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">-0.785</td>
+<td style="text-align: right;">-0.786</td>
 <td style="text-align: right;">-0.732</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">y_old</td>
-<td style="text-align: right;">7.240</td>
+<td style="text-align: right;">7.248</td>
 <td style="text-align: right;">7.432</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">I(y_old^2)</td>
-<td style="text-align: right;">-4.031</td>
+<td style="text-align: right;">-4.036</td>
 <td style="text-align: right;">-4.184</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">wine_countryAustralia</td>
-<td style="text-align: right;">3.878</td>
+<td style="text-align: right;">3.883</td>
 <td style="text-align: right;">3.838</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">wine_countryAustria</td>
-<td style="text-align: right;">6.433</td>
+<td style="text-align: right;">6.440</td>
 <td style="text-align: right;">5.768</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">wine_countryChile</td>
-<td style="text-align: right;">-1.234</td>
+<td style="text-align: right;">-1.236</td>
 <td style="text-align: right;">-1.081</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">wine_countryFrance</td>
-<td style="text-align: right;">13.970</td>
+<td style="text-align: right;">13.986</td>
 <td style="text-align: right;">13.064</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">wine_countryGermany</td>
-<td style="text-align: right;">5.507</td>
+<td style="text-align: right;">5.513</td>
 <td style="text-align: right;">4.941</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">wine_countryGreece</td>
-<td style="text-align: right;">3.541</td>
+<td style="text-align: right;">3.545</td>
 <td style="text-align: right;">3.987</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">wine_countryIsrael</td>
-<td style="text-align: right;">2.997</td>
+<td style="text-align: right;">3.000</td>
 <td style="text-align: right;">2.808</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">wine_countryItaly</td>
-<td style="text-align: right;">12.554</td>
+<td style="text-align: right;">12.569</td>
 <td style="text-align: right;">11.973</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">wine_countryMexico</td>
-<td style="text-align: right;">5.974</td>
+<td style="text-align: right;">5.981</td>
 <td style="text-align: right;">4.605</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">wine_countryNew Zealand</td>
-<td style="text-align: right;">12.865</td>
+<td style="text-align: right;">12.879</td>
 <td style="text-align: right;">10.099</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">wine_countryPortugal</td>
-<td style="text-align: right;">-4.496</td>
+<td style="text-align: right;">-4.501</td>
 <td style="text-align: right;">-4.554</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">wine_countrySouth Africa</td>
-<td style="text-align: right;">3.755</td>
+<td style="text-align: right;">3.759</td>
 <td style="text-align: right;">3.604</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">wine_countrySpain</td>
-<td style="text-align: right;">1.682</td>
+<td style="text-align: right;">1.684</td>
 <td style="text-align: right;">1.621</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">wine_countryUnited States</td>
-<td style="text-align: right;">3.794</td>
+<td style="text-align: right;">3.798</td>
 <td style="text-align: right;">3.493</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">wine_countryUruguay</td>
-<td style="text-align: right;">2.314</td>
+<td style="text-align: right;">2.317</td>
 <td style="text-align: right;">1.940</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">log(n_ratings)</td>
-<td style="text-align: right;">-13.091</td>
+<td style="text-align: right;">-13.106</td>
 <td style="text-align: right;">-11.877</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">wine_rating</td>
-<td style="text-align: right;">6.191</td>
+<td style="text-align: right;">6.198</td>
 <td style="text-align: right;">5.795</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">log(n_ratings):wine_rating</td>
-<td style="text-align: right;">11.648</td>
+<td style="text-align: right;">11.661</td>
 <td style="text-align: right;">10.587</td>
 </tr>
 </tbody>

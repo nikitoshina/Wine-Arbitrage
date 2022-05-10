@@ -10,7 +10,9 @@ bibliography: packages.bib
 ---
 
 ```{r setup, echo = FALSE}
-knitr::opts_chunk$set(echo = FALSE,echo=FALSE,warning=FALSE,message=FALSE,error=FALSE)
+knitr::opts_chunk$set(echo = FALSE, echo = FALSE, warning = FALSE,
+                      message = FALSE, error = FALSE,
+                      dev = "png", dpi = 300)
 knitr::write_bib(c(.packages()), "packages.bib")
 ```
 ## Abstract
@@ -35,6 +37,7 @@ library(ggforce)
 library(lubridate)
 # to do White Test on heteroskedacity
 library(lmtest)
+library(sandwich)
 # For VIF
 library(car)
 # For ROC curve 
@@ -267,14 +270,14 @@ wines %>% filter(y_old<=10, wine_country == countries[8:16])%>%group_by(y_old, w
 ```
 
 ## Empirical Models
-To estimate the relationships between variables I will be using linear model. The regression price prediction: `Price ~ age + age^2 + country + rating + log(number_of_ratings) rating*n_ratings`. Age and rating are expected to have a positive correlation, while number_of_ratings is suspected of having a negative correlation because affordable wines have more reviews. The variable country will be converted into a series of dummy variables, so some countries are generally expected to have better or worse wine, which will also be examined using logistic regression.
+To estimate the relationships between variables I will be using linear model. The regression price prediction: `Price ~ age + age^2 + country + rating + log(n_ratings) + rating:log(n_ratings)`. Age and rating are expected to have a positive correlation, while number_of_ratings is suspected of having a negative correlation because affordable wines have more reviews. The variable country will be converted into a series of dummy variables, so some countries are generally expected to have better or worse wine, which will also be examined using logistic regression.
 
 ## Results and Diagnostics
 ```{r lm price modeles}
 # Linear Model
 # Select wines younger than 10 years and with more than 30 ratings
 wines_price_lm <- wines %>% filter(y_old<=10, n_ratings >= 30)
-lm_price_model <- lm(wine_price ~ y_old + I(y_old^2) + wine_country + log(n_ratings) + wine_rating + log(n_ratings):wine_rating,data = wines_price_lm)
+lm_price_model <- lm(wine_price ~ y_old + I(y_old^2) + wine_country + log(n_ratings) + wine_rating + log(n_ratings):wine_rating, data = wines_price_lm)
 
 
 # Get TSS ESS RSS of Restricted
@@ -288,9 +291,12 @@ N = nobs(lm_price_model)
 # Wald test
 wald_test = (ESS/M)/(RSS/(N-k-1))
 wald_test = round(wald_test,2)
+
+# BP test
+bpresult <- lmtest::bptest(lm_price_model)
 ```
 
-The regression results suggest that age and `wine_rating` positively correlate with price, while `n_ratings` have negative. Each extra year increases the price by `r dollar(round(lm_price_model$coefficients["y_old"],2))`. A 1% increase in the number of ratings coincides with a `r percent(abs(round(lm_price_model$coefficients["log(n_ratings)"],6)/100), accuracy = 0.01)` decrease in price. The interaction variable between `n_ratings` and `wine_rating` suggests that 1 unit increase in rating increases marginal effect of 1% change of number of ratings on price by `r percent(abs(round(lm_price_model$coefficients["log(n_ratings):wine_rating"],6)/100), accuracy = 0.01)`. Three of these variables have a significant relationship at the 1% level. Countries have a variable impact on the price, with some being better than others. Wald Test on the significance of the country variable resulted in `r wald_test`, which is enough to accept that the country variable is significant at 1% significance. Level R^2^ of the regression is `r percent(summary(lm_price_model)$r.squared, accuracy = 0.01)`, meaning the variability of explanatory variables explains `r percent(summary(lm_price_model)$r.squared, accuracy = 0.01)` of the price variation. F statistic for the regression is `r round(summary(lm_price_model)$fstatistic, 2)["value"]`, which is enough to confirm that the regression has substantial explanatory power at 1% significance level. To test for heteroskedasticity, White Test was used. The test p-value is below 1%, so we can conclude that the distribution of errors is  heteroskedastic. To test for multicollinearity, VIF is used. All explanatory variables before introduction of interaction term had VIF less than 1.1, meaning multicollinearity was not a concern for the model. Nonetheless, introduction of interaction term reduced intercept and wine country Chile significance below threshold, which was expected. 
+The regression results suggest that age and `wine_rating` positively correlate with price, while `n_ratings` have negative. Each extra year increases the price by `r dollar(round(lm_price_model$coefficients["y_old"],2))`. A 1% increase in the number of ratings coincides with a `r percent(abs(round(lm_price_model$coefficients["log(n_ratings)"],6)/100), accuracy = 0.01)` decrease in price. The interaction variable between `n_ratings` and `wine_rating` suggests that 1 unit increase in rating increases marginal effect of 1% change of number of ratings on price by `r percent(abs(round(lm_price_model$coefficients["log(n_ratings):wine_rating"],6)/100), accuracy = 0.01)`. Three of these variables have a significant relationship at the 1% level. Countries have a variable impact on the price, with some being better than others. Wald Test on the significance of the country variable resulted in `r wald_test`, which is enough to accept that the country variable is significant at 1% significance. Level R^2^ of the regression is `r percent(summary(lm_price_model)$r.squared, accuracy = 0.01)`, meaning the variability of explanatory variables explains `r percent(summary(lm_price_model)$r.squared, accuracy = 0.01)` of the price variation. F statistic for the regression is `r round(summary(lm_price_model)$fstatistic, 2)["value"]`, which is enough to confirm that the regression has substantial explanatory power at 1% significance level. As for heteroskedasticity Breusch-Pagan test was used yielding `r bpresult$p.value`, which allows us to conclude that there is heteroskedasticity at significance level below 1%. To test for multicollinearity, VIF is used. All explanatory variables before introduction of interaction term had VIF less than 1.1, meaning multicollinearity was not a concern for the model. Nonetheless, introduction of interaction term reduced intercept and wine country Chile significance below threshold, which was expected. 
 
 ```{r LM Price, fig.keep='all'}
 tab_model(lm_price_model)
@@ -300,9 +306,7 @@ print(paste("Wald test statistic:",round(wald_test,2)))
 
 #res <- resid(lm_price_model)
 #plot(fitted(lm_price_model), res)
-
-lmtest::bptest(lm_price_model, ~ y_old * wine_country * log(n_ratings) * wine_rating + I(y_old^2)+I(wine_country)+I(wine_rating^2)+I(log(n_ratings)^2), data = wines_price_lm)
-
+bpresult
 # VIF
 car::vif(lm_price_model)
 # Print distribution of residuals
@@ -316,7 +320,7 @@ To address the heteroskedasticity a robust regression was performed. The t-stati
 # Linear Model
 # Select wines younger than 10 years and with more than 30 ratings
 wines_price_lm <- wines %>% filter(y_old<=10, n_ratings >= 30)
-lm_robust_model <- estimatr::lm_robust(wine_price ~ y_old + I(y_old^2) + wine_country + log(n_ratings) + wine_rating + log(n_ratings):wine_rating, data = wines_price_lm,se_type = "stata")
+lm_robust_model <- lmtest::coeftest(lm_price_model , vcov = sandwich::vcovHC(lm_price_model , type = "HC0"))
 
 #summary(lm_robust_model)
 # 
